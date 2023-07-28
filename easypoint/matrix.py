@@ -211,7 +211,9 @@ class Matrix:
             if control != i:
                 return submatrix
 
-            submatrix[new_index] = self[control, *new_index]
+            cut_index = (control, *new_index)
+
+            submatrix[new_index] = self[cut_index]
 
         if control is not None:
             return submatrix
