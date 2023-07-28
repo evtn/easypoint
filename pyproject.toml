@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "easypoint"
+version = "0.1.0"
+description = "Minimal general-purpose vector / matrix arithmetics library"
+authors = ["Dmitry Gritsenko <k01419q45@ya.ru>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+typing-extensions = "^4.7.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
