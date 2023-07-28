@@ -8,7 +8,6 @@ from typing import (
     Sequence,
     cast,
     overload,
-    reveal_type,
 )
 from typing_extensions import Self
 
