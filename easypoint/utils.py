@@ -84,7 +84,7 @@ def calc_slice_func(
 
         return get(start + index * step)
 
-    result: tuple[IndexFunc, int | None] = new_get, length
+    result: tuple[IndexFunc, int | None] = (new_get, length)
 
     return result
 

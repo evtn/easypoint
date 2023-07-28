@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: 3.9
         
-      - name: Install poetry
+      - name: Install Poetry
         uses: abatilo/actions-poetry@v2
 
       - name: Build and Publish

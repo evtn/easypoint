@@ -1,16 +1,17 @@
-from typing import Callable, Union
+from __future__ import annotations
+from typing import Callable, List, Optional, Tuple, Union
 
 
-PointLike = Union["Point", float, list[float], tuple[float, ...]]
+PointLike = Union["Point", float, List[float], Tuple[float, ...]]
 
-Index = tuple[int, ...]
+Index = Tuple[int, ...]
 Size = Index
 
-MatrixList = list[Union[float, "MatrixList"]]
+MatrixList = List[Union[float, "MatrixList"]]
 
 Merger = Callable[[float, float], float]
 ApplyFunc = Callable[[PointLike, PointLike], "Point"]
-IndexFunc = Callable[[int | None], float]
+IndexFunc = Callable[[Optional[int]], float]
 MatrixIndexFunc = Callable[[Index], float]
 
 from .point import Point

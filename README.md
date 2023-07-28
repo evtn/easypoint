@@ -1,5 +1,20 @@
 # Minimal general-purpose vector / matrix arithmetics library
 
+# Installation
+
+Install `easypoint` module:
+
+```bash
+poetry add easypoint
+```
+
+or
+
+```bash
+python -m pip install easypoint
+```
+
+
 # Introduction
 
 easypoint has 2 main types to work with: `Point` (a.k.a. `Vector`) and `Matrix`

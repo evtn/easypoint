@@ -146,8 +146,11 @@ class Matrix:
         for index in new:
             result: float = 0
             for x in range(self.size[split]):
-                s = self[*index[:split], x]
-                o = other[x, *index[split:]]
+                s_index = (*index[:split], x)
+                o_index = (x, *index[split:])
+
+                s = self[s_index]
+                o = other[o_index]
                 result += s * o
 
             new[index] = result
@@ -208,7 +211,9 @@ class Matrix:
             if control != i:
                 return submatrix
 
-            submatrix[new_index] = self[control, *new_index]
+            cut_index = (control, *new_index)
+
+            submatrix[new_index] = self[cut_index]
 
         if control is not None:
             return submatrix
