@@ -1,6 +1,6 @@
-# `easypoint` — Minimal general-purpose vector / matrix arithmetics library
+# Minimal general-purpose vector / matrix arithmetics library
 
-## Introduction
+# Introduction
 
 easypoint has 2 main types to work with: `Point` (a.k.a. `Vector`) and `Matrix`
 
