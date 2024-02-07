@@ -2,18 +2,53 @@ from __future__ import annotations
 
 from math import cos, hypot, sin, radians as deg_to_rad
 from typing import (
-    Any,
     Callable,
     Iterator,
     Sequence,
+    TypeVar,
     cast,
     overload,
 )
 from typing_extensions import Self
 
 
-def applier(func: Merger) -> ApplyFunc:
-    return lambda s, o: Point.from_(s).apply(Point.from_(o), func)
+@overload
+def apply(s: FnPoint, o: PointLike, func: Merger) -> FnPoint:
+    ...
+
+
+@overload
+def apply(s: PointLike, o: FnPoint, func: Merger) -> FnPoint:
+    ...
+
+
+@overload
+def apply(s: _P, o: PointLike, func: Merger) -> _P:
+    ...
+
+
+@overload
+def apply(s: BasePointLike, o: _P, func: Merger) -> _P:
+    ...
+
+
+@overload
+def apply(s: PointLike, o: PointLike, func: Merger) -> Point:
+    ...
+
+
+def apply(s: PointLike, o: PointLike, func: Merger) -> Point:
+    return Point.from_(s).apply(Point.from_(o), func)
+
+
+def applier(func: Merger):
+    def apply(s: PointLike, o: PointLike):
+        return Point.from_(s).apply(Point.from_(o), func)
+
+    return apply
+
+
+_P = TypeVar("_P", bound="Point")
 
 
 class Point(Sequence[float]):
@@ -28,13 +63,36 @@ class Point(Sequence[float]):
         new.name = new_name
         return new
 
+    @overload
     @staticmethod
-    def from_(value: PointLike, loop: bool = False) -> Point:
+    def from_(value: _P) -> _P:
+        ...
+
+    @overload
+    @staticmethod
+    def from_(value: PointLike) -> Point:
+        ...
+
+    @staticmethod
+    def from_(value: _P | PointLike, loop: bool = False) -> _P | Point:
         if isinstance(value, Point):
             return value
         if isinstance(value, (list, tuple)):
             return Point(*value, loop=loop)
         return Point(value, loop=True)
+
+    def as_(self, *argnames: str | None) -> dict[str, float]:
+        result: dict[str, float] = {}
+
+        for i, argname in enumerate(argnames):
+            if not argname:
+                continue
+
+            result[argname] = self[i]
+
+        return result
+
+    to_dict = as_
 
     @overload
     def __getitem__(self, item: int) -> float:
@@ -174,6 +232,9 @@ class Point(Sequence[float]):
         """
         Transforms a vecN using a given NxN matrix.
         """
+        if len(matrix.size) != 2:
+            raise ValueError("Cannot transform a vector using a non-2d matrix")
+
         self_matrix = Matrix.as_matrix(self).transpose()
 
         product = matrix * self_matrix

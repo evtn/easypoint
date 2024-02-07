@@ -1,8 +1,8 @@
 from __future__ import annotations
 from typing import Callable, List, Optional, Tuple, Union
 
-
-PointLike = Union["Point", float, List[float], Tuple[float, ...]]
+BasePointLike = Union[float, List[float], Tuple[float, ...]]
+PointLike = Union["Point", BasePointLike]
 
 Index = Tuple[int, ...]
 Size = Index

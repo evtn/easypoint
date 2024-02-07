@@ -14,15 +14,14 @@ or
 python -m pip install easypoint
 ```
 
-
 # Introduction
 
 easypoint has 2 main types to work with: `Point` (a.k.a. `Vector`) and `Matrix`
 
-`Point` class builds up on my previous work with [evtn/soda](https://github.com/evtn/soda) and [evtn/soda-old](https://github.com/evtn/soda-old).    
-Both being graphics-oriented, so vector arithmetics is a must-have. 
+`Point` class builds up on my previous work with [evtn/soda](https://github.com/evtn/soda) and [evtn/soda-old](https://github.com/evtn/soda-old).  
+Both being graphics-oriented, so vector arithmetics is a must-have.
 
-But over time, `Point` became a convenient class for various non-graphical tasks and tasks out of scope for `soda` (e.g. raster graphics).    
+But over time, `Point` became a convenient class for various non-graphical tasks and tasks out of scope for `soda` (e.g. raster graphics).  
 This module also brings a refined `Matrix` class I've been using in various private/unfinished projects (an old version can be seen [here](https://gist.github.com/evtn/8683e58770f2901527275d46465e4cbe))
 
 Both are refined and generalized for N dimensions. Some new additions (like `Point.transform(matrix: Matrix)`) are also in place.
@@ -53,7 +52,7 @@ p3 = Point.from_(1) # Point[1, ...]
 # ...from another Point
 
 p4 = p1[:2] # Point[1, 2]
-p5 = p1[0, 2, 1] # Point[1, 3, 2] 
+p5 = p1[0, 2, 1] # Point[1, 3, 2]
 p6 = p3[:] # Error (a slice of an infinite Point)
 ```
 
@@ -130,7 +129,7 @@ t.transform(matrix) # Point[20, 5]
 
 ### Looped points
 
-Sometimes it's convenient to have a point with `p[i] == p[i % n]` (a repeating set of coordinates).    
+Sometimes it's convenient to have a point with `p[i] == p[i % n]` (a repeating set of coordinates).  
 It can be achieved by passing `loop=True` into `Point` constructor or `Point.from_`:
 
 ```python
@@ -147,9 +146,9 @@ Keep in mind that `Point.from_(int)` always produces a looped point, if you need
 
 Points support three types of indexing:
 
-- `point[int]` returns a value at that index, or 0 if this index doesn't exist (and the point is not looped)
-- `point[slice]` returns a `Point` with values under that slice
-- `point[tuple[int, ...]]` returns a Point with values under indices in the tuple
+-   `point[int]` returns a value at that index, or 0 if this index doesn't exist (and the point is not looped)
+-   `point[slice]` returns a `Point` with values under that slice
+-   `point[tuple[int, ...]]` returns a Point with values under indices in the tuple
 
 ```python
 a = Point(*range(5)) # Point[0, 1, 2, 3, 4]
@@ -158,14 +157,14 @@ a[2:4] # Point[2, 3, 4]
 a[4, 3, 8, 2] # Point[4, 3, 0, 2]
 ```
 
-Same applies for setting values on indices.   
+Same applies for setting values on indices.  
 Keep in mind that setting a slice/tuple doesn't change the dimension count, extra indices/values are ignored
 
 There are also `x`, `y`, and `z` properties as aliases for `[0]`, `[1]`, and `[2]`
 
 ### Interpolation
 
-For convenience, there are `point.interpolate(other: PointLike, k: float)` to interpolate between two points (self at 0, other at 1).    
+For convenience, there are `point.interpolate(other: PointLike, k: float)` to interpolate between two points (self at 0, other at 1).  
 `point.center(other: PointLike)` is an alias for `point.interpolate(other, 0.5)`
 
 ### Naming
@@ -179,6 +178,21 @@ b = a.named("B") # Point<B>[3, 4]
 
 Naming returns a copy of the point, so the original one is not renamed
 
+### Point to Dictionary
+
+_New in 0.2.1_
+
+You can convert any Point into a dictionary with defined keys using `Point.as_` or `Point.to_dict`
+
+```python
+from easypoint import Point
+
+p = Point(1, 2, 3)
+
+p.to_dict("x", "y", "z") # { "x": 1, "y": 2, "z": 3 }
+p.to_dict("x", "y") # { "x": 1, "y": 2 }
+p.to_dict("x", None, "z") # { "x": 1, "z": 3 }
+```
 
 ### FnPoint
 
@@ -201,9 +215,9 @@ fp[4] # 0
 
 ```
 
-It is fully compatible with Point, but any operation on FnPoint will return you a new, derived FnPoint.    
+It is fully compatible with Point, but any operation on FnPoint will return you a new, derived FnPoint.
 
-If you want (for some reason) to get a concrete `Point` instance, call `fp.concrete(loop: bool = False)`    
+If you want (for some reason) to get a concrete `Point` instance, call `fp.concrete(loop: bool = False)`  
 Obviously, this will raise an error on an infinite FnPoint, so either pass a length into the constructor or as a slice:
 
 ```python
@@ -217,15 +231,15 @@ fp_fin.concrete()
 fp_slice.concrete()
 
 # error
-fp.concrete() 
+fp.concrete()
 
 ```
 
 ## Matrix
 
-Now you can wake up and take a non-pointy pill, at last.    
+Now you can wake up and take a non-pointy pill, at last.
 
-Matrices are N-dimensional tables, well, you can [read Wikipedia](https://en.wikipedia.org/wiki/Matrix_(mathematics)) instead of this.
+Matrices are N-dimensional tables, well, you can [read Wikipedia](<https://en.wikipedia.org/wiki/Matrix_(mathematics)>) instead of this.
 
 In `easypoint`, matrices are quite straightforward (keep in mind, they have 0-based indexing):
 
@@ -262,8 +276,8 @@ for index in mul_table.iter((3, 3), (4, 5)):
 
 ### Operations
 
-As with `Point`, with matrices you can get an element-wise sum, difference and multiply matrix by a number.    
-Multiplication (as well as `@`) is reserved for matrix multiplication (or, generally, tensor contraction).    
+As with `Point`, with matrices you can get an element-wise sum, difference and multiply matrix by a number.  
+Multiplication (as well as `@`) is reserved for matrix multiplication (or, generally, tensor contraction).  
 If you need an element-wise multiplication (or any other operation), you can use `Matrix.apply_bin`:
 
 ```python
@@ -306,16 +320,16 @@ for (y, x) in coord_table:
 
 Other methods defined:
 
-- `matrix.new()` creates an empty matrix of the same size (same as `Matrix(matrix.size)`),
-- `matrix.copy()` copies the matrix (same as `matrix.apply(x: x)`)
-- `matrix.transpose()` transposes the matrix (wow!)
-- `matrix.cut(index)` returns a new matrix where all the rows/columns/etc. that pass through a specific index are removed.
-- `matrix.get_submatrix(i: int)` for an N-dimensional matrix, returns an (N-1)-dimensional matrix at some index `i`. For example, used on a 2D matrix, returns an `i`-th row.
-- `matrix.as_matrix(*points: PointLike)` builds a 2D matrix out of Point-like values.
+-   `matrix.new()` creates an empty matrix of the same size (same as `Matrix(matrix.size)`),
+-   `matrix.copy()` copies the matrix (same as `matrix.apply(x: x)`)
+-   `matrix.transpose()` transposes the matrix (wow!)
+-   `matrix.cut(index)` returns a new matrix where all the rows/columns/etc. that pass through a specific index are removed.
+-   `matrix.get_submatrix(i: int)` for an N-dimensional matrix, returns an (N-1)-dimensional matrix at some index `i`. For example, used on a 2D matrix, returns an `i`-th row.
+-   `matrix.as_matrix(*points: PointLike)` builds a 2D matrix out of Point-like values.
 
 ### Internal state
 
-Matrices in `easypoint` are implemented as flat dictionaries, with empty (default) values are omitted.    
+Matrices in `easypoint` are implemented as flat dictionaries, with empty (default) values are omitted.  
 This helps with memory and speed if you have sparse matrices.
 
 ```python
@@ -329,9 +343,8 @@ matrix[32474, 2387] # 327
 matrix.data # {3247399969913: 327}
 ```
 
-If you need to swap the storage for something more efficient, build your own class.    
+If you need to swap the storage for something more efficient, build your own class.  
 For example, here's an example of possible read-only `FnMatrix` class:
-
 
 ```python
 from easypoint import Matrix
@@ -342,31 +355,30 @@ class FnMatrix(Matrix):
     def __init__(self, size: Size, fn: MatrixIndexFunc):
         self.fn = fn
         self.size = size
-    
+
     def get_index(self, index: Index):
         return self.fn(index)
-    
+
     def set_index(self, index: Index, value: float):
         raise ValueError("this matrix is read-only")
-    
+
     def copy(self):
         return FnMatrix(self.size, self.fn)
-    
+
     def new(self):
         return self.copy()
-    
+
 
 def sum_func(index: Index):
     x, y = index
-    return x + y    
+    return x + y
 
 
 fnm = FnMatrix(sum_func)
 ```
 
-
 # TODO
 
-- Better docs?
-- Proper conversion from list to Matrix (although it's fairly easy now)
-- Better test coverage
+-   Better docs?
+-   Proper conversion from list to Matrix (although it's fairly easy now)
+-   Better test coverage

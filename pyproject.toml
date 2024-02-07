@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "easypoint"
-version = "0.2.0"
+version = "0.2.1"
 description = "Minimal general-purpose vector / matrix arithmetics library"
 authors = ["Dmitry Gritsenko <k01419q45@ya.ru>"]
 license = "MIT"
